@@ -65,15 +65,44 @@
 
 ---
 
-### ![](https://raw.githubusercontent.com/microsoft/vscode-icons/main/icons/dark/settings.svg) Local Server Configuration
+### ⚙️ How to Connect to Your Local Server
 
-> [!NOTE]
-> To connect to your local server, you must modify your system's **hosts** file.
-> - **Windows**: `C:\Windows\System32\drivers\etc\hosts`
-> - **Linux/macOS**: `/etc/hosts`
->
-> Add the following lines to the end of the file:
-> ```
-> 127.0.0.1 www.growtopia1.com
-> 127.0.0.1 www.growtopia2.com
-> ```
+To test your server, you need to redirect the Growtopia game client on your computer to connect to your local machine instead of the official game servers. This is done by editing the `hosts` file on your system.
+
+> [!WARNING]
+> Editing the `hosts` file requires administrator privileges. Remember to revert these changes when you want to play on the official Growtopia servers again!
+
+**Step 1: Open the `hosts` file with administrator rights.**
+
+*   **Windows:**
+    1.  Search for "Notepad" in the Start Menu, right-click it, and select "Run as administrator".
+    2.  In Notepad, go to `File > Open`.
+    3.  Navigate to `C:\Windows\System32\drivers\etc`.
+    4.  Change the file type filter from "Text Documents (*.txt)" to "All Files (*.*)".
+    5.  Select the `hosts` file and click "Open".
+
+*   **Linux/macOS:**
+    1.  Open a terminal.
+    2.  Run the command: `sudo nano /etc/hosts` (or use another text editor like `vim` or `gedit`).
+
+**Step 2: Add the server address lines.**
+
+Add the following two lines to the very end of the `hosts` file. Do not change anything else.
+
+```
+127.0.0.1 www.growtopia1.com
+127.0.0.1 www.growtopia2.com
+```
+
+**Step 3: Save the file and launch the game.**
+
+Save your changes to the `hosts` file. Now, simply run Growtopia. The game will automatically connect to your local server running on your machine.
+
+**How to Revert (to play on official servers):**
+
+To play on the official servers again, simply open the `hosts` file (with administrator rights) and delete the two lines you added, or comment them out by adding a `#` symbol at the beginning of each line, like this:
+
+```
+# 127.0.0.1 www.growtopia1.com
+# 127.0.0.1 www.growtopia2.com
+```
