@@ -56,7 +56,7 @@
    sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
    # Update package list and install dependencies
    sudo apt-get update
-   sudo apt-get install -y build-essential g++-12 libssl-dev openssl sqlite3 libsqlite3-dev
+   sudo apt-get install -y build-essential g++-12 libstdc++-12-dev libssl-dev openssl sqlite3 libsqlite3-dev
    ```
         
    </p>

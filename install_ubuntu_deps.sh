@@ -7,10 +7,11 @@ sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
 echo "Updating package list..."
 sudo apt-get update
 
-echo "Installing dependencies, including g++-12..."
+echo "Installing dependencies, including g++-12 and its standard library..."
 sudo apt-get install -y \
     build-essential \
     g++-12 \
+    libstdc++-12-dev \
     libssl-dev \
     openssl \
     sqlite3 \
