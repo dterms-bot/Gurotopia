@@ -100,10 +100,18 @@ void tile_change(ENetEvent& event, state state)
                 case type::MAIN_DOOR: throw std::runtime_error("(stand over and punch to use)"); break;
                 case type::LOCK:
                 {
-                    if (peer->user_id != w->second.owner) 
+                    // @note Find the lock at the punched position
+                    auto lock_it = std::ranges::find_if(w->second.locks, [&](const Lock& lock) {
+                        return lock.pos[0] == state.punch[0] && lock.pos[1] == state.punch[1];
+                    });
+
+                    if (lock_it != w->second.locks.end())
                     {
-                        // @todo add message saying who owns the lock.
-                        return;
+                        if (peer->user_id != lock_it->owner_id)
+                        {
+                            // @todo add message saying who owns the lock.
+                            return;
+                        }
                     }
                     break;
                 }
@@ -269,7 +277,11 @@ void tile_change(ENetEvent& event, state state)
             {
                 case type::LOCK: // @todo handle sl, bl, hl, builder lock, ect.
                 {
-                    if (peer->user_id == w->second.owner)
+                    auto lock_it = std::ranges::find_if(w->second.locks, [&](const Lock& lock) {
+                        return lock.pos[0] == state.punch[0] && lock.pos[1] == state.punch[1];
+                    });
+
+                    if (lock_it != w->second.locks.end() && peer->user_id == lock_it->owner_id)
                     {
                         packet::create(*event.peer, false, 0, {
                             "OnDialogRequest",

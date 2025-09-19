@@ -136,7 +136,7 @@ peer::~peer()
     
     db.execute("REPLACE INTO peers (_n, role, gems, lvl, xp) VALUES (?, ?, ?, ?, ?)", [this](sqlite3_stmt* stmt) 
     {
-        sqlite3_bind_text(stmt, 1, this->ltoken[0].c_str(), -1, SQLITE_STATIC);
+        sqlite3_bind_text(stmt, 1, this->ltoken[0].c_str(), -1, SQLITE_TRANSIENT);
         sqlite3_bind_int(stmt, 2, this->role);
         sqlite3_bind_int(stmt, 3, this->gems);
         sqlite3_bind_int(stmt, 4, this->level[0]);
@@ -144,7 +144,7 @@ peer::~peer()
     });
     
     db.execute("DELETE FROM slots WHERE _n = ?", [this](auto stmt) {
-        sqlite3_bind_text(stmt, 1, this->ltoken[0].c_str(), -1, SQLITE_STATIC);
+        sqlite3_bind_text(stmt, 1, this->ltoken[0].c_str(), -1, SQLITE_TRANSIENT);
     });
     
     for (const slot &s : this->slots) 
@@ -152,7 +152,7 @@ peer::~peer()
         if ((s.id == 18 || s.id == 32) || s.count <= 0) continue;
         db.execute("INSERT INTO slots (_n, i, c) VALUES (?, ?, ?)", [this, &s](sqlite3_stmt* stmt) 
         {
-            sqlite3_bind_text(stmt, 1, this->ltoken[0].c_str(), -1, SQLITE_STATIC);
+            sqlite3_bind_text(stmt, 1, this->ltoken[0].c_str(), -1, SQLITE_TRANSIENT);
             sqlite3_bind_int(stmt, 2, s.id);
             sqlite3_bind_int(stmt, 3, s.count);
         });
