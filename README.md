@@ -45,7 +45,7 @@
    <p>
 
    > [!IMPORTANT]
-   > This project requires a modern C++ compiler (`g++-12` or newer) to build.
+   > This project requires a modern C++ compiler (`g++-13` or newer) to build.
 
    > [!TIP]
    > You can run the `./install_ubuntu_deps.sh` script to install all dependencies, including the correct compiler, automatically.
@@ -56,7 +56,7 @@
    sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
    # Update package list and install dependencies
    sudo apt-get update
-   sudo apt-get install -y build-essential g++-12 libstdc++-12-dev libssl-dev openssl sqlite3 libsqlite3-dev
+   sudo apt-get install -y build-essential g++-13 libstdc++-13-dev libssl-dev openssl sqlite3 libsqlite3-dev
    ```
         
    </p>
