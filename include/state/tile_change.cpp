@@ -100,18 +100,10 @@ void tile_change(ENetEvent& event, state state)
                 case type::MAIN_DOOR: throw std::runtime_error("(stand over and punch to use)"); break;
                 case type::LOCK:
                 {
-                    // @note Find the lock at the punched position
-                    auto lock_it = std::ranges::find_if(w->second.locks, [&](const Lock& lock) {
-                        return lock.pos[0] == state.punch[0] && lock.pos[1] == state.punch[1];
-                    });
-
-                    if (lock_it != w->second.locks.end())
+                    if (peer->user_id != w->second.owner)
                     {
-                        if (peer->user_id != lock_it->owner_id)
-                        {
-                            // @todo add message saying who owns the lock.
-                            return;
-                        }
+                        // @todo add message saying who owns the lock.
+                        return;
                     }
                     break;
                 }
@@ -203,11 +195,33 @@ void tile_change(ENetEvent& event, state state)
                 }
 
                 for (std::pair<short, short> &i : im)
-                    item_change_object(event, {i.first, i.second},
+                {
+                    if (i.first == 112) // Gem ID
+                    {
+                        int remaining_gems = i.second;
+                        while (remaining_gems > 0)
                         {
-                            static_cast<float>(state.punch[0]) + ransuu.shosu({7, 50}, 0.01f), // @note (0.07 - 0.50)
-                            static_cast<float>(state.punch[1]) + ransuu.shosu({7, 50}, 0.01f)  // @note (0.07 - 0.50)
-                        });
+                            int batch_size = 1;
+                            if (remaining_gems >= 10) batch_size = 10;
+                            else if (remaining_gems >= 5) batch_size = 5;
+
+                            item_change_object(event, {i.first, static_cast<short>(batch_size)},
+                                {
+                                    static_cast<float>(state.punch[0]) + ransuu.shosu({7, 50}, 0.01f),
+                                    static_cast<float>(state.punch[1]) + ransuu.shosu({7, 50}, 0.01f)
+                                });
+                            remaining_gems -= batch_size;
+                        }
+                    }
+                    else
+                    {
+                        item_change_object(event, {i.first, i.second},
+                            {
+                                static_cast<float>(state.punch[0]) + ransuu.shosu({7, 50}, 0.01f),
+                                static_cast<float>(state.punch[1]) + ransuu.shosu({7, 50}, 0.01f)
+                            });
+                    }
+                }
                         
                 peer->add_xp(std::trunc(1.0f + items[remember_id].rarity / 5.0f));
             }
@@ -277,11 +291,7 @@ void tile_change(ENetEvent& event, state state)
             {
                 case type::LOCK: // @todo handle sl, bl, hl, builder lock, ect.
                 {
-                    auto lock_it = std::ranges::find_if(w->second.locks, [&](const Lock& lock) {
-                        return lock.pos[0] == state.punch[0] && lock.pos[1] == state.punch[1];
-                    });
-
-                    if (lock_it != w->second.locks.end() && peer->user_id == lock_it->owner_id)
+                    if (peer->user_id == w->second.owner)
                     {
                         packet::create(*event.peer, false, 0, {
                             "OnDialogRequest",
