@@ -10,6 +10,7 @@ class ransuu
 {
     std::mt19937 engine; // @todo change model(?)
 
+
     public:
     ransuu() : engine(std::random_device{}()) {}
 
