@@ -1,10 +1,6 @@
 /*
     @copyright gurotopia (c) 2024-05-25
-    @version perent SHA: fc87576555f8ac3911baff9e1b0e692184da81c9 2025-09-18
-
-    @authors
-      @leeendl
-      @XeyyzuV2
+    @version perent SHA: a36b27b8bfaf0b11e2864e0db0affa36f706ce0f 2025-09-12
 */
 #include "include/pch.hpp"
 #include "include/event_type/__event_type.hpp"
@@ -40,6 +36,14 @@ int main()
         address.port = server_data.port;
 
         server = enet_host_create (ENET_ADDRESS_TYPE_IPV4, &address, 50zu, 2zu, 0, 0);
+
+        if (server == NULL)
+        {
+            fprintf(stderr, "An error occurred while trying to create an ENet server host.\n");
+            fprintf(stderr, "This is often caused by the port (%d) being in use by another application.\n", address.port);
+            exit(EXIT_FAILURE);
+        }
+
         std::thread(&https::listener, server_data).detach();
     } // @note delete server_data, address
     server->usingNewPacketForServer = true;
