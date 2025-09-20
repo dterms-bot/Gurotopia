@@ -7,7 +7,6 @@ sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
 echo "Updating package list..."
 sudo apt-get update
 
-
 echo "Installing dependencies, including g++-13 and its standard library..."
 sudo apt-get install -y \
     build-essential \
