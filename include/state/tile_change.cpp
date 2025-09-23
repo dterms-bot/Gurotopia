@@ -7,6 +7,7 @@
 #include "action/quit_to_exit.hpp"
 #include "action/join_request.hpp"
 #include "item_activate_object.hpp"
+#include "database/splicing.hpp"
 #include "tile_change.hpp"
 
 #include <cmath>
@@ -351,7 +352,34 @@ void tile_change(ENetEvent& event, state state)
                 case type::SEED:
                 case type::PROVIDER:
                 {
-                    if (block.fg != 0) return; // @todo add splicing
+                    if (block.fg != 0)
+                    {
+                        // Splicing Logic
+                        ::item& existing_item = items[block.fg];
+                        if (existing_item.type == type::SEED && item.id != existing_item.id)
+                        {
+                            u_short first_id = std::min(item.id, existing_item.id);
+                            u_short second_id = std::max(item.id, existing_item.id);
+                            auto it = splicing_lookup_table.find({first_id, second_id});
+
+                            if (it != splicing_lookup_table.end())
+                            {
+                                u_short result_id = it->second;
+                                // It's a valid splice!
+                                block.fg = result_id; // Set the new tree
+                                block.tick = steady_clock::now(); // Start the growth timer
+
+                                state.id = result_id; // Update state to show the new tree visually
+                                state_visuals(event, std::move(state));
+
+                                peer->emplace(slot(item.id, -1)); // Consume the seed from player's inventory
+                                inventory_visuals(event);
+
+                                return; // Splicing action is complete
+                            }
+                        }
+                        return; // Not a valid splice, or block is occupied by non-seed
+                    }
                     block.tick = steady_clock::now();
                     break;
                 }

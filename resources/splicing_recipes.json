@@ -1,0 +1,38 @@
+[
+  {
+    "parent1": "Dirt Seed",
+    "parent2": "Cave Background Seed",
+    "result": {
+      "raw_name": "Door Seed",
+      "type": 19,
+      "hits": 4,
+      "rarity": 5,
+      "tick": 900,
+      "info": "Grows into a basic wooden door."
+    }
+  },
+  {
+    "parent1": "Dirt Seed",
+    "parent2": "Rock Seed",
+    "result": {
+      "raw_name": "Grass Seed",
+      "type": 19,
+      "hits": 2,
+      "rarity": 2,
+      "tick": 300,
+      "info": "Grows into a patch of grass."
+    }
+  },
+  {
+    "parent1": "Dirt Seed",
+    "parent2": "Lava Seed",
+    "result": {
+      "raw_name": "Wood Block Seed",
+      "type": 19,
+      "hits": 4,
+      "rarity": 10,
+      "tick": 1800,
+      "info": "Grows into a sturdy Wood Block."
+    }
+  }
+]

@@ -10,6 +10,7 @@
 #include "include/event_type/__event_type.hpp"
 
 #include "include/database/shouhin.hpp"
+#include "include/database/splicing.hpp"
 #include "include/tools/string.hpp"
 #include "include/https/https.hpp"
 #include <filesystem>
@@ -61,6 +62,7 @@ int main()
             .read(reinterpret_cast<char*>(&im_data[60zu]), size);
 
         cache_items();
+        load_splicing_recipes();
     } // @note delete size
     catch (std::filesystem::filesystem_error error) { puts(error.what()); }
     catch (...) { puts("unknown error occured during decoding items.dat"); } // @note if this appears, it's probably cache_items()...
