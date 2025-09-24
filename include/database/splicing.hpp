@@ -17,5 +17,6 @@
     extern std::map<std::pair<u_short, u_short>, u_short> splicing_lookup_table;
 
     extern void load_splicing_recipes();
+extern void append_spliced_items_to_data();
 
     #endif

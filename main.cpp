@@ -63,6 +63,7 @@ int main()
 
         cache_items();
         load_splicing_recipes();
+        append_spliced_items_to_data();
     } // @note delete size
     catch (std::filesystem::filesystem_error error) { puts(error.what()); }
     catch (...) { puts("unknown error occured during decoding items.dat"); } // @note if this appears, it's probably cache_items()...
